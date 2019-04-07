@@ -35,16 +35,16 @@ class SensorIoT(object):
         # Gera um Dataset de 50MB
         tamanho = 0
         temperaturas = []
-        print '>>> Iniciando grava��o de Dataset <<<'
+        print ('>>> Iniciando gravacao de Dataset <<<')
         while (tamanho <= 1048576):
         #while (tamanho <= 10000):
             tamanho = SensorIoT.obter_tamanho_arquivo_temperaturas(nome_arquivo)   
-            print 'Tamanho parcial do Dataset: %s Bytes' % tamanho
+            print ('Tamanho parcial do Dataset: %s Bytes' % tamanho)
             #temperaturas = SensorIoT.gerar_temperaturas()
             temperaturas.append(str(randint(0, 100)).strip(" ")+',')
             arquivo.write(''.join(temperaturas))
-        print '>>> Grava��o de Dataset finalizada <<<'
-        print 'Tamanho do Dataset: %s Bytes' % tamanho
+        print ('>>> Grava��o de Dataset finalizada <<<')
+        print ('Tamanho do Dataset: %s Bytes' % tamanho)
         arquivo.close()
     
     @staticmethod
@@ -57,7 +57,7 @@ class SensorIoT(object):
         
         numeros_str = ''.join(numeros)
         
-        print numeros_str
+        print (numeros_str)
     
     @staticmethod    
     def gerar_dados_escalares(tam_dataset):
@@ -87,7 +87,7 @@ class SensorIoT(object):
         arquivo = open(nome_arquivo,'rb')
         linha = arquivo.readline()
         t = 0
-        print '>>> Lendo temperaturas e guardando na coleção <<<'
+        print ('>>> Lendo temperaturas e guardando na coleção <<<')
         while linha:
             inicio = timeit.default_timer()
             valores = linha.strip(" ").split(',')
@@ -95,7 +95,7 @@ class SensorIoT(object):
             t = t + (inicio - fim)/1000000
             print ('duracao parcial da gravação na coleção: %f segundos' % t)
         arquivo.close()
-        print '>>> Coleção de temperaturas finalizada <<<'
+        print ('>>> Coleção de temperaturas finalizada <<<')
         print ('Duração da gravação na coleção: %f minutos' % t/60)
         return valores
     

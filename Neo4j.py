@@ -48,9 +48,9 @@ def gravar_dados_escalar_neo4j(tam_dataset):
 def gravar_dados_posicional_neo4j():
         t = 0
                 
-        print '>>> Inicio de geracao de latitudes em memoria <<<'
+        print ('>>> Inicio de geracao de latitudes em memoria <<<')
         latitudes = SensorIoT.gerar_dados_posicionais()
-        print '>>> Fim de geracao de latitudes em memoria <<<'
+        print ('>>> Fim de geracao de latitudes em memoria <<<')
         
         # Obtem total de nos
         resultado = session.run('match (sensor) where sensor:sp return count(*)')
@@ -67,11 +67,11 @@ def gravar_dados_posicional_neo4j():
             fim = timeit.default_timer()
             t = t + (inicio - fim)/1000000
             cont += 1
-            print 'duracao parcial da gravacao no neo4j: %f segundos' % t
-        print '>>> Fim de gravacao de latitudes no neo4j <<<'
+            print ('duracao parcial da gravacao no neo4j: %f segundos' % t)
+        print ('>>> Fim de gravacao de latitudes no neo4j <<<')
         t = t/60
-        print 'duracao da gravacao no neo4j: %f minutos' % t
-        print 'total de latitudes gravadas no neo4j: %s' % len(latitudes)
+        print ('duracao da gravacao no neo4j: %f minutos' % t)
+        print ('total de latitudes gravadas no neo4j: %s' % len(latitudes))
         # Fecha conexao
         session.close()
 
@@ -111,6 +111,6 @@ for dataset in datasets:
     session.run("MATCH (n { id: {metade} }) SET n.temperatura = 0", {"metade": metade})
     
     mensagem = mensagem + buscar_dado_neo4j('0')'''
-print mensagem
+print (mensagem)
     
 #################################

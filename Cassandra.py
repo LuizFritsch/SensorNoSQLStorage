@@ -228,9 +228,9 @@ def gravar_dados_escalares_geral_cassandra(dataset, contadorgeral):
     #Inicializador dos tempos de escritas escalares
     tempoescalar = 0
     #Insere os dados escalares no número de vezes do contadorgeral e pega o tempo médio
-    print 'Gravação de dados escalares de %dMb no Cassandra.' % (dataset/1048576)
+    print ('Gravação de dados escalares de %dMb no Cassandra.' % (dataset/1048576))
     while contadorescritaescalar < contadorgeral:
-        print '%dª execução de escrita escalar' % (contadorescritaescalar+1)
+        print ('%dª execução de escrita escalar' % (contadorescritaescalar+1))
         tempoescalar = tempoescalar + gravar_dados_escalar_cassandra(dataset)
         contadorescritaescalar = contadorescritaescalar + 1
         #Não apaga a última execução para poder permitir as consultas
@@ -238,7 +238,7 @@ def gravar_dados_escalares_geral_cassandra(dataset, contadorgeral):
             session.execute('truncate table temperaturasdisk')
     texto = texto + 'Gravação de %dMb de dados escalares com tempo médio final de %d segundos.' % (dataset/1048576, tempoescalar/contadorescritaescalar) + '\n'
     texto = texto + '---------------------------------------------------------------------------------------------------------------\n'
-    print '---------------------------------------------------------------------------------------------------------------'
+    print ('---------------------------------------------------------------------------------------------------------------')
     return texto
 
 def gravar_dados_posicionais_geral_cassandra(dataset, contadorgeral):
@@ -248,16 +248,16 @@ def gravar_dados_posicionais_geral_cassandra(dataset, contadorgeral):
     #Inicializador dos tempos de escritas posicionais
     tempoposicional = 0
     #Insere os dados posicionais no número de vezes do contadorgeral e pega o tempo médio
-    print 'Gravação de dados posicionais de %dMb no Cassandra.' % (dataset/1048576)
+    print ('Gravação de dados posicionais de %dMb no Cassandra.' % (dataset/1048576))
     while contadorescritaposicional < contadorgeral:
-        print '%dª execução de escrita posicional' % (contadorescritaposicional+1)
+        print ('%dª execução de escrita posicional' % (contadorescritaposicional+1))
         tempoposicional = tempoposicional + gravar_dados_posicionais_cassandra(dataset)
         contadorescritaposicional = contadorescritaposicional + 1
         if contadorescritaposicional < contadorgeral:
             session.execute('truncate table latitudesdisk')
     texto = texto +  'Gravação de %dMb de dados posicionais com tempo médio final de %d segundos.' % (dataset/1048576, tempoposicional/contadorescritaposicional) + '\n'
     texto = texto + '---------------------------------------------------------------------------------------------------------------\n'
-    print '---------------------------------------------------------------------------------------------------------------'
+    print ('---------------------------------------------------------------------------------------------------------------')
     return texto
 
 def gravar_dados_multimidia_geral_cassandra(dataset, contadorgeral):
@@ -266,9 +266,9 @@ def gravar_dados_multimidia_geral_cassandra(dataset, contadorgeral):
     contadorescritamultimidia = 0
     #Inicializador dos tempos de escritas multimídia
     tempoescritamultimidia = 0
-    print 'Gravação de dados multimídia de %dMb no Cassandra.' % (dataset/1048576)
+    print ('Gravação de dados multimídia de %dMb no Cassandra.' % (dataset/1048576))
     while contadorescritamultimidia < contadorgeral:
-        print '%dª execução de escrita multimídia' % (contadorescritamultimidia+1)
+        print ('%dª execução de escrita multimídia' % (contadorescritamultimidia+1))
         tempoescritamultimidia = tempoescritamultimidia + gravar_multimedia_cassandra("diretorio", str(dataset) + ".mp4")
         contadorescritamultimidia = contadorescritamultimidia + 1
         if contadorescritamultimidia < contadorgeral:
@@ -286,14 +286,14 @@ def consultar_dados_escalares_geral_cassandra(dataset, contadorgeral):
     #Consultas de dados escalares
     fim_escalar = dataset/1024
     session.execute("insert into temperaturasdisk (id, temperatura) values (%s, %s)", (fim_escalar, 100))
-    print 'Consulta de dados escalares de %dMb no Cassandra.' % (dataset/1048576)
+    print ('Consulta de dados escalares de %dMb no Cassandra.' % (dataset/1048576))
     while contadorconsultaescalar < contadorgeral:
-        print '%dª execução de consulta escalar' % (contadorconsultaescalar+1)
+        print ('%dª execução de consulta escalar' % (contadorconsultaescalar+1))
         tempoconsultaescalar = tempoconsultaescalar + buscar_dado_cassandra("100")
         contadorconsultaescalar = contadorconsultaescalar + 1
     texto = texto + 'Consulta da chave 100 em %dMb de dados escalares com tempo médio final %.6f segundos.' % (dataset/1048576, tempoconsultaescalar/contadorconsultaescalar) + '\n'
     texto = texto + '-----------------------------------------------------------------------------------------------------------------------------\n'
-    print '-----------------------------------------------------------------------------------------------------------------------------'
+    print ('-----------------------------------------------------------------------------------------------------------------------------')
     return texto
     
 def consultar_dados_posicionais_geral_cassandra(dataset, contadorgeral):
@@ -305,14 +305,14 @@ def consultar_dados_posicionais_geral_cassandra(dataset, contadorgeral):
     #Consultas de dados posicionais
     fim_posicional = dataset/1024
     session.execute("insert into latitudesdisk(id, latitude) values (%s, %s)", (fim_posicional, "0° 0´N"))
-    print 'Consulta de dados posicionais de %dMb no Cassandra.' % (dataset/1048576)
+    print ('Consulta de dados posicionais de %dMb no Cassandra.' % (dataset/1048576))
     while contadorconsultaposicional < contadorgeral:
-        print '%dª execução de consulta posicional' % (contadorconsultaposicional+1)
+        print ('%dª execução de consulta posicional' % (contadorconsultaposicional+1))
         tempoconsultaposicional = tempoconsultaposicional  + buscar_dado_cassandra("0° 0´N")
         contadorconsultaposicional = contadorconsultaposicional + 1
     texto = texto +  'Consulta da chave 0° 0´N em %dMb de dados posicionais com tempo médio final %.6f segundos.' % (dataset/1048576, tempoconsultaposicional/contadorconsultaposicional) + '\n'
     texto = texto + '-----------------------------------------------------------------------------------------------------------------------------------\n'
-    print '-----------------------------------------------------------------------------------------------------------------------------------'
+    print ('-----------------------------------------------------------------------------------------------------------------------------------')
     return texto
 
 def consultar_dados_multimidia_geral_cassandra(dataset, contadorgeral):
@@ -323,14 +323,14 @@ def consultar_dados_multimidia_geral_cassandra(dataset, contadorgeral):
     tempoconsultamultimidia = 0
     max_chunk = dataset/1024
     gravar_multimedia_cassandra("diretorio", str(dataset) + ".mp4")
-    print 'Consulta de dados multimídia de %dMb no Cassandra.' % (dataset/1048576)
+    print ('Consulta de dados multimídia de %dMb no Cassandra.' % (dataset/1048576))
     while contadorconsultamultimidia < contadorgeral:
-        print '%dª execução de consulta multimídia' % (contadorconsultamultimidia+1)
+        print ('%dª execução de consulta multimídia' % (contadorconsultamultimidia+1))
         tempoconsultamultimidia = tempoconsultamultimidia + buscar_dado_multimedia_cassandra(str(dataset)+".mp4", max_chunk)
         contadorconsultamultimidia = contadorconsultamultimidia + 1
     texto = texto + 'Consulta em %dMb de dados multimidia com tempo médio final %.6f segundos.' % (dataset/1048576, tempoconsultamultimidia/contadorconsultamultimidia) + '\n'
     texto = texto + '------------------------------------------------------------------------------------------------------------\n'
-    print '------------------------------------------------------------------------------------------------------------'
+    print ('------------------------------------------------------------------------------------------------------------')
     return texto
 
 def executar_escritas_e_leituras_cassandra():

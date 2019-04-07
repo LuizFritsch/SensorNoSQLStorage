@@ -133,7 +133,7 @@ def contar_registros():
     keys = r.keys('*')
     for key in keys:
         cont += 1
-    print cont
+    print (cont)
 
 #################################
 ###  SCRIPT DE EXECUÇÃO GERAL ###
@@ -162,7 +162,7 @@ def executar_escritas_e_leituras_redis():
         tempoescalar = 0
         tempoposicional = 0
         #Insere 25x dados escalares e posicionais e pega o tempo médio
-        print 'Gravação de dados escalares e posicionais de %dMb no redis.' % (dataset/1048576)
+        print ('Gravação de dados escalares e posicionais de %dMb no redis.' % (dataset/1048576))
         while contadorescrita < contadorgeral:
             tempoescalar = tempoescalar + gravar_dados_escalar_redis(dataset)
             tempoposicional = tempoposicional + gravar_dados_posicionais_redis(dataset)
@@ -178,14 +178,14 @@ def executar_escritas_e_leituras_redis():
         contadorconsultaposicional = 0
     
         r.set(100, 100)
-        print 'Consulta de dados escalares de %dMb no redis.' % (dataset/1048576)
+        print ('Consulta de dados escalares de %dMb no redis.' % (dataset/1048576))
         while contadorconsultaescalar < contadorgeral:
             tempoconsultaescalar = tempoconsultaescalar + buscar_dado_redis("100")
             contadorconsultaescalar = contadorconsultaescalar + 1
         mensagem = mensagem +  'Consulta da chave 100 em %dMb de dados escalares com tempo médio final %.6f segundos.' % (dataset/1048576, tempoconsultaescalar/contadorconsultaescalar) + '\n'
     
         r.set("0° 0´N", "0° 0´N")
-        print 'Consulta de dados posicionais de %dMb no redis.' % (dataset/1048576)
+        print ('Consulta de dados posicionais de %dMb no redis.' % (dataset/1048576))
         while contadorconsultaposicional < contadorgeral:
             tempoconsultaposicional = tempoconsultaposicional  + buscar_dado_redis("0° 0´N")
             contadorconsultaposicional = contadorconsultaposicional + 1
@@ -195,7 +195,7 @@ def executar_escritas_e_leituras_redis():
         #Escrita multimídia
         contadorescritamultimidia = 0
         tempoescritamultimidia = 0
-        print 'Gravação de dados multimídia de %dMb no redis.' % (dataset/1048576)
+        print ('Gravação de dados multimídia de %dMb no redis.' % (dataset/1048576))
         while contadorescritamultimidia < contadorgeral:
             tempoescritamultimidia = tempoescritamultimidia + gravar_multimedia_redis("diretorio", str(dataset) + ".mp4")
             contadorescritamultimidia = contadorescritamultimidia + 1
@@ -205,13 +205,13 @@ def executar_escritas_e_leituras_redis():
         contadorconsultamultimidia = 0
         tempoconsultamultimidia = 0
         r.rename("0", "teste")
-        print 'Consulta de dados multimídia de %dMb no redis.' % (dataset/1048576)
+        print ('Consulta de dados multimídia de %dMb no redis.' % (dataset/1048576))
         while contadorconsultamultimidia < contadorgeral:
             tempoconsultamultimidia = tempoconsultamultimidia + buscar_dado_redis("teste")
             contadorconsultamultimidia = contadorconsultamultimidia + 1
         mensagem = mensagem +  'Consulta em %dMb de dados multimidia com tempo médio final %.6f segundos.' % (dataset/1048576, tempoconsultamultimidia/contadorconsultamultimidia) + '\n'
         mensagem = mensagem +  '-------------------------------------------------------------------------------------------------------------------------------------------------\n'
-        print '----------------------------------------------------------------------'
+        print ('----------------------------------------------------------------------')
         
         #Limpa todos os dados antes de pular para os testes do próximo dataset
         r.flushall()

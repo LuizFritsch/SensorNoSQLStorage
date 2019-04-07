@@ -36,7 +36,7 @@ def gravar_temperaturas_unico_mongodb(nome_arquivo):
         indice = 0
         t = 0
         num_str = ""
-        print '>>> Inicio de gravação de temperaturas no mongodb <<<'
+        print (">>> Inicio de gravação de temperaturas no mongodb <<<")
         for linha in arquivo:
             linha_str = ""
             linha_str = str(linha)
@@ -50,12 +50,12 @@ def gravar_temperaturas_unico_mongodb(nome_arquivo):
                     colecao.insert({'_id':colecao.count() + 1 ,'sensor':'DHT11', 'temperatura' : num})
                     fim = timeit.default_timer()
                     t = t + (inicio - fim)/1000000
-                    print 'duracao parcial da gravação no mongodb: %f segundos' % t
+                    print ('duracao parcial da gravação no mongodb: %f segundos' % t)
                     indice += 1
                     num_str = ""   
-        print '>>> Fim de gravação de temperaturas no mongodb <<<'
+        print ('>>> Fim de gravação de temperaturas no mongodb <<<')
         t = t/60
-        print 'duracao da gravação no mongodb: %f minutos' % t
+        print ('duracao da gravação no mongodb: %f minutos' % t)
 
 
 def gravar_temperaturas_escalar_mongodb(tam_dataset):
@@ -125,10 +125,10 @@ def deletar_multimidia_unico_mongodb(id):
         fim = timeit.default_timer()
         t = (inicio - fim)/1000000
         tempo = abs(t) * 1000
-        print 'arquivo localizado em %d milisegundos. ' % tempo
+        print ('arquivo localizado em %d milisegundos. ' % tempo)
         fs.delete(id)
     else:
-        print 'arquivo não existe!'
+        print ('arquivo não existe!')
 
 def inserir_pedacos_multimidia(caminho):
     diretorio = os.listdir(caminho)
@@ -156,9 +156,9 @@ def consultar_multimidia_mongodb(arquivo):
         consulta = colecao.find({'nome_arquivo' : arquivo}).explain()['executionStats']
         for atrib, valor in consulta.items():
             if atrib == "executionTimeMillis":
-                print 'Tempo de busca: %.20f' % (float(valor) / 1000) + ' segundos.'
+                print ('Tempo de busca: %.20f' % (float(valor) / 1000) + ' segundos.')
     else:
-        print "Item não encontrado"
+        print ("Item não encontrado")
     
 def consultar_temperatura_mongodb(temperatura):
     if (colecao.find({'temperatura' : temperatura}).count() > 0):     
@@ -292,7 +292,7 @@ def gravar_dados_escalares_geral_mongodb(dataset, contadorgeral):
     #Inicializador dos tempos de escrita escalares/posicionais
     tempoescalar = 0
     #Insere os dados escalares no número de vezes do contadorgeral e pega o tempo médio
-    print 'Gravação de dados escalares de %dMb no mongodb.' % (dataset/1048576)
+    print ('Gravação de dados escalares de %dMb no mongodb.' % (dataset/1048576))
     while contadorescritaescalar < contadorgeral:
         tempoescalar = tempoescalar + gravar_temperaturas_escalar_mongodb(dataset)
         contadorescritaescalar = contadorescritaescalar + 1
@@ -311,7 +311,7 @@ def gravar_dados_posicionais_geral_mongodb(dataset, contadorgeral):
     #Inicializador dos tempos de escritas posicionais
     tempoposicional = 0
     #Insere os dados posicionais no número de vezes do contadorgeral e pega o tempo médio
-    print 'Escrita de dados posicionais de %dMb no mongodb.' % (dataset/1048576)
+    print ('Escrita de dados posicionais de %dMb no mongodb.' % (dataset/1048576))
     while contadorescritaposicional < contadorgeral:
         tempoposicional = tempoposicional + gravar_dados_posicionais_mongodb(dataset)
         contadorescritaposicional = contadorescritaposicional + 1
@@ -327,9 +327,9 @@ def gravar_dados_multimidia_geral_mongodb(dataset, contadorgeral):
     contadorescritamultimidia = 0
     #Inicializador dos tempos de escrita multimidia
     tempoescritamultimidia = 0
-    print 'Escrita de dados multimídia de %dMb no mongodb.' % (dataset/1048576)
+    print ('Escrita de dados multimídia de %dMb no mongodb.' % (dataset/1048576))
     while contadorescritamultimidia < contadorgeral:
-        Id_tempo = gravar_multimidia_mongodb("diretorio", str(dataset) + ".mp4")
+        Id_tempo = gravar_multimidia_mongodb("", str(dataset) + ".mp4")
         tempoescritamultimidia = tempoescritamultimidia + Id_tempo[1]
         contadorescritamultimidia = contadorescritamultimidia  + 1
     texto = texto + 'Gravação de %dMb de dados multimidia com tempo médio final de %.6f segundos.' % (dataset/1048576, tempoescritamultimidia/contadorescritamultimidia) + '\n'
@@ -342,7 +342,7 @@ def consultar_dados_escalares_geral_mongodb(dataset, contadorgeral):
     #Inicializador dos tempo de consulta escalar
     tempoconsultaescalar = 0
     colecao.insert({'temperatura' : 100})
-    print 'Consulta de dados escalares em %dMb no mongodb.' % (dataset/1048576)
+    print ('Consulta de dados escalares em %dMb no mongodb.' % (dataset/1048576))
     while contadorconsultaescalar < contadorgeral:
         tempoconsultaescalar = tempoconsultaescalar + consultar_temperatura_mongodb(100)
         contadorconsultaescalar = contadorconsultaescalar + 1
@@ -357,7 +357,7 @@ def consultar_dados_posicionais_geral_mongodb(dataset, contadorgeral):
     #Inicializador dos tempos de consulta posicional
     tempoconsultaposicional = 0
     colecao.insert({'latitude' : '0° 0´N'})
-    print 'Consulta de dados posicionais em %dMb no mongodb.' % (dataset/1048576)
+    print ('Consulta de dados posicionais em %dMb no mongodb.' % (dataset/1048576))
     while contadorconsultaposicional < contadorgeral:
         tempoconsultaposicional = tempoconsultaposicional + consultar_posicao_mongodb('0° 0´N')
         contadorconsultaposicional = contadorconsultaposicional + 1
@@ -376,7 +376,7 @@ def consultar_dados_multimidia_geral_mongodb(dataset, contadorgeral):
     banco.fs.files.drop()
     Id_tempo = gravar_multimidia_mongodb("diretorio", str(dataset) + ".mp4")
     IdArquivo = Id_tempo[0]
-    print 'Consulta de dados multimídia em %dMb no mongodb.' % (dataset/1048576)
+    print ('Consulta de dados multimídia em %dMb no mongodb.' % (dataset/1048576))
     while contadorconsultamultimidia < contadorgeral:
         tempoconsultamultimidia = tempoconsultamultimidia + consultar_chunk_multimidia_mongodb(IdArquivo)
         contadorconsultamultimidia = contadorconsultamultimidia + 1

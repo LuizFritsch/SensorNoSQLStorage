@@ -85,7 +85,7 @@ def getData(requisicao_json):
         nome = dado[0:posicao]
         
     if ( (criterio == 'w_performance') or (tipo != 'multimedia' and criterio == 'r_performance') ):
-        print obterDadoRedis(dado, banco, tipo)
+        print (obterDadoRedis(dado, banco, tipo))
     # MongoDB obteve menor tempo de consulta multimídia
     elif ( tipo ==  'multimedia' and criterio == 'r_performance' ):
         obterDadoMongoDB(nome)
@@ -144,7 +144,7 @@ def obterDadoMongoDB(nome):
     colecao = bd['escalares_posicionais']
     cursor = colecao.find({'_id' : nome})
     for document in cursor:
-        print document
+        print (document)
 
 # Gravar no Cassandra
 def gravarCassandra(dado, banco):
@@ -166,7 +166,7 @@ def obterDadoCassandra(dado, banco):
     for l in linhas:
         resultado = str(l)
     resultado = resultado[ resultado.find("=")+1 : resultado.find(")") ]
-    print resultado
+    print (resultado)
     
 # Identifica o tipo de dado
 def identificarTipoDeDadoIoT(requisicao_json):
